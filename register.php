@@ -66,7 +66,7 @@ if ($_POST) {
 							
 							echo "Success! You have created an account!";
 
-							header("Location: http://scotchbox/login-system-again/login.php");
+							header("Location: http://scotchbox/login-system-again/registration-success.php");
 
 						} else {
 							echo "Unsuccessful, please try again!";
