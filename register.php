@@ -5,9 +5,8 @@
 
 <?php
 
-$mysql_connection = new mysqli("localhost", "root", "root", "login_system");
-// Opens a new connection to the MySQL server, server = localhost, username = root, password = root, database = login_system
-// $mysql_connection is the variable that represents the connection
+include 'model.php';
+// include variables from model.php file
 
 if ($mysql_connection -> connect_error) {
 	die("Connection failed: " . $mysql_connection -> connect_error);
@@ -18,10 +17,6 @@ if ($_POST) {
 	// Post is used to submit the user entered information to register an account
 	// If the form has been submitted process form data
 
-	$Email = $_POST['Email'];
-	$Password =$_POST['Password'];
-	// Store Email and Password user inputted data in variables
-
 	if (($Email) AND ($Password)) {
 		// Check to see if the user has provided an Email and a Password
 
@@ -30,16 +25,6 @@ if ($_POST) {
 			
 			if (password_strong($Password)) {
 				// Use the function "password_strong" to evaluate if the password matches strength parameters
-
-				$code = rand(5000, 200);
-				// Create a unique activation code as we will put it in the database AND put it in the email
-
-				$sql = "INSERT INTO login_system (email, password, activation_code) 
-				VALUES ('$Email', '$Password', '$code');";
-				// create an INSERT SQL query that populates the login_system rows with the user entered values stored inside the variables
-
-				$result = mysqli_query($mysql_connection, $sql);
-				// performs a query against the MySQL database
 
 				if ($result) {
 					//Check that the result ran successfully
@@ -88,22 +73,21 @@ if ($_POST) {
 	else {
 		echo "You need to provide a valid Email address and a Password";
 	}
-
 }
 
 ?>
 
-
 <div class="container-fluid col-xs-4 col-md-6">
 	<h1 class="register-title">Register</h1>
-
 	<form class="register-form" action="register.php" method="post">
 		<p>Email:*</p><input type="text" name="Email">
 		<p>Password:*</p><input type="password" name="Password">
 		<br><br><button class="register-button btn btn-default" type="submit" >Create Account</button>
 	</form>
 </div>
+
 <?php
+
 function password_strong($Password) {
 	if ( (preg_match("/[A-Z]/", $Password) == 1) AND 
 		 (preg_match("/[a-z]/", $Password) == 1) AND
@@ -113,8 +97,12 @@ function password_strong($Password) {
 		// strlen returns the length of the given string
 
 		return true;
-	} else {  
-		echo "Password must be at least 7 characters long and contain at least one lowercase letter, one uppercase letter and one number";	
+	} else if (preg_match("/[A-Z]/", $Password) < 1) {  
+		echo "Password must contain at least one Uppercase letter";	
+	} else if (preg_match("/[a-z]/", $Password) < 1) {
+		echo "Password must contain at least one Lowercase letter";
+	} else if (preg_match("/[0-9]/", $Password) < 1) {
+		echo "Password must contain at least one number";
 	}
 }
 ?>
