@@ -77,6 +77,7 @@ if ($_POST) {
 	<form action = "login.php" method="post">
 		<p>Email:*</p><input type="text" name="Email">
 		<p>Password:*</p><input type="password" name="Password">
-		<br><br><button class="btn btn-default" type="submit" >Login</button>
+		<br><br><button class="login-button btn btn-default" type="submit" >Login</button> <a class="forgot-link" href="http://scotchbox/login-system-again/forgot-password.php">Forgot Password?</a>
 	</form>
+	
 </div>
